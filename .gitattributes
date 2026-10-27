@@ -1,0 +1,3 @@
+# Keep generated CSV tables consistent across platforms. Source captions may
+# legitimately contain trailing spaces; preserve those data values verbatim.
+*.csv text eol=lf whitespace=-blank-at-eol
