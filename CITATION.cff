@@ -5,7 +5,7 @@ title: 'Seeing ViT Registers: An Independent DINOv2 Reproduction'
 authors:
   - family-names: Kargın
     given-names: Turhan Can
-version: 0.1.0
+version: 0.2.0
 date-released: '2026-10-27'
 license: MIT
 url: https://github.com/turhancan97/seeing-vit-registers

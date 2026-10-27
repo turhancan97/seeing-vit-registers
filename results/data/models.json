@@ -12,7 +12,8 @@
     "sequence_length": 1370,
     "parameter_count": 304368640,
     "image_count": 20,
-    "elapsed_seconds": 12.365491852164268
+    "elapsed_seconds": 21.893630800768733,
+    "peak_cuda_allocated_bytes": 4421569536
   },
   "large_registers": {
     "model_id": "facebook/dinov2-with-registers-large",
@@ -27,7 +28,8 @@
     "sequence_length": 1374,
     "parameter_count": 304372736,
     "image_count": 20,
-    "elapsed_seconds": 10.764793040696532
+    "elapsed_seconds": 18.869304554071277,
+    "peak_cuda_allocated_bytes": 4458732544
   },
   "base_no_registers": {
     "model_id": "facebook/dinov2-base",
@@ -42,7 +44,8 @@
     "sequence_length": 1370,
     "parameter_count": 86580480,
     "image_count": 20,
-    "elapsed_seconds": 5.343108305707574
+    "elapsed_seconds": 8.33954392420128,
+    "peak_cuda_allocated_bytes": 1624591872
   },
   "base_registers": {
     "model_id": "facebook/dinov2-with-registers-base",
@@ -57,6 +60,39 @@
     "sequence_length": 1374,
     "parameter_count": 86583552,
     "image_count": 20,
-    "elapsed_seconds": 6.61440244410187
+    "elapsed_seconds": 7.722591622266918,
+    "peak_cuda_allocated_bytes": 1630531584
+  },
+  "giant_no_registers": {
+    "model_id": "facebook/dinov2-giant",
+    "revision": "611a9d42f2335e0f921f1e313ad3c1b7178d206d",
+    "model_class": "Dinov2Model",
+    "backend": "transformers",
+    "registers": 0,
+    "layers": 40,
+    "hidden_size": 1536,
+    "dtype": "float32",
+    "attention_implementation": "eager",
+    "sequence_length": 1370,
+    "parameter_count": 1136480768,
+    "image_count": 20,
+    "elapsed_seconds": 24.678574239369482,
+    "peak_cuda_allocated_bytes": 12493898752
+  },
+  "giant_registers": {
+    "model_id": "facebook/dinov2-with-registers-giant",
+    "revision": "8d0d49f77fb8b5dd78842496ff14afe7dd4d85cb",
+    "model_class": "Dinov2WithRegistersModel",
+    "backend": "transformers",
+    "registers": 4,
+    "layers": 40,
+    "hidden_size": 1536,
+    "dtype": "float32",
+    "attention_implementation": "eager",
+    "sequence_length": 1374,
+    "parameter_count": 1136486912,
+    "image_count": 20,
+    "elapsed_seconds": 46.32589828688651,
+    "peak_cuda_allocated_bytes": 12531184640
   }
 }

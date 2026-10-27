@@ -1,0 +1,42 @@
+{
+  "large_no_registers": {
+    "feature_space": "raw",
+    "mean": 96.37286376953125,
+    "std": 9.111285209655762,
+    "median": 96.42475891113281,
+    "maximum": 132.9075469970703,
+    "max_to_median": 1.3783550262451172,
+    "pooled_3sigma_count": 36,
+    "pooled_3sigma_percent": 0.13148283418553688,
+    "images_with_tail": 10,
+    "largest_image_share_percent": 22.22222222222222,
+    "top3_image_share_percent": 58.333333333333336,
+    "unique_patch_coordinates": 36,
+    "max_coordinate_image_frequency": 1,
+    "normalized_reference_overlap_count": 0,
+    "mean_offset_energy_fraction_tail": 0.008892795071005821,
+    "mean_offset_energy_fraction_other": 0.008839861489832401,
+    "centered_norm_tail_mean": 125.99581146240234,
+    "scale_invariance_verified": true
+  },
+  "large_registers": {
+    "feature_space": "raw",
+    "mean": 286.15643310546875,
+    "std": 40.05134963989258,
+    "median": 284.21795654296875,
+    "maximum": 455.6636962890625,
+    "max_to_median": 1.6032192707061768,
+    "pooled_3sigma_count": 216,
+    "pooled_3sigma_percent": 0.7888970051132214,
+    "images_with_tail": 1,
+    "largest_image_share_percent": 100.0,
+    "top3_image_share_percent": 100.0,
+    "unique_patch_coordinates": 216,
+    "max_coordinate_image_frequency": 1,
+    "normalized_reference_overlap_count": 0,
+    "mean_offset_energy_fraction_tail": 0.00039070204365998507,
+    "mean_offset_energy_fraction_other": 0.0022579068318009377,
+    "centered_norm_tail_mean": 416.67816162109375,
+    "scale_invariance_verified": true
+  }
+}

@@ -1,52 +1,116 @@
-# The single source of experiment settings. Image URLs/hashes live in images/manifest.json.
 seed: 42
 image_size: 518
 patch_size: 14
 image_count: 20
-image_mean: [0.485, 0.456, 0.406]
-image_std: [0.229, 0.224, 0.225]
+image_mean:
+- 0.485
+- 0.456
+- 0.406
+image_std:
+- 0.229
+- 0.224
+- 0.225
 precision: float32
 cpu_threads: 8
-sizes: [large, base]
-selected_indices: [0, 1, 3, 5, 14, 19]
+sizes:
+- large
+- base
+- giant
+selected_indices:
+- 0
+- 1
+- 3
+- 5
+- 14
+- 19
 selection_reason: Selected from the input contact sheet before model outcomes.
 hero_image_index: 1
-cosine_seed_xy: [0.5, 0.5]
+cosine_seed_xy:
+- 0.5
+- 0.5
 layer_k: 3.0
-fixed_thresholds: [60, 80, 150]
-original_thresholds: [100, 150, 200]
+fixed_thresholds:
+- 60
+- 80
+- 150
+original_thresholds:
+- 100
+- 150
+- 200
 relative_threshold_multiple: 1.5
 threshold:
   value: 68.01323582036801
-  search_quantiles: [0.90, 0.9999]
+  search_quantiles:
+  - 0.9
+  - 0.9999
   minimum_upper_count: 3
   minimum_gap_ratio: 1.2
   otsu_bins: 256
-  notes: Exploratory cutoff from the original large no-register gap; shared across models and sizes. Not preregistered.
+  notes: Exploratory cutoff from the original large no-register gap; shared across
+    models and sizes. Not preregistered.
+  low_search_quantiles:
+  - 0.0001
+  - 0.1
 image_manifest: images/manifest.json
 annotation_manifest: images/coco_annotations.json
 results_dir: results
 figure_dpi: 300
 histogram_bins: 120
-attention_color_min: 0.000001
+attention_color_min: 1.0e-06
 models:
-  - key: large_no_registers
-    id: facebook/dinov2-large
-    revision: 47b73eefe95e8d44ec3623f8890bd894b6ea2d6c
-    size: large
-    registers: 0
-  - key: large_registers
-    id: facebook/dinov2-with-registers-large
-    revision: e4c89a4e05589de9b3e188688a303d0f3c04d0f3
-    size: large
-    registers: 4
-  - key: base_no_registers
-    id: facebook/dinov2-base
-    revision: f9e44c814b77203eaa57a6bdbbd535f21ede1415
-    size: base
-    registers: 0
-  - key: base_registers
-    id: facebook/dinov2-with-registers-base
-    revision: a1d738ccfa7ae170945f210395d99dde8adb1805
-    size: base
-    registers: 4
+- key: large_no_registers
+  id: facebook/dinov2-large
+  revision: 47b73eefe95e8d44ec3623f8890bd894b6ea2d6c
+  size: large
+  registers: 0
+- key: large_registers
+  id: facebook/dinov2-with-registers-large
+  revision: e4c89a4e05589de9b3e188688a303d0f3c04d0f3
+  size: large
+  registers: 4
+- key: base_no_registers
+  id: facebook/dinov2-base
+  revision: f9e44c814b77203eaa57a6bdbbd535f21ede1415
+  size: base
+  registers: 0
+- key: base_registers
+  id: facebook/dinov2-with-registers-base
+  revision: a1d738ccfa7ae170945f210395d99dde8adb1805
+  size: base
+  registers: 4
+- key: giant_no_registers
+  id: facebook/dinov2-giant
+  revision: 611a9d42f2335e0f921f1e313ad3c1b7178d206d
+  size: giant
+  registers: 0
+- key: giant_registers
+  id: facebook/dinov2-with-registers-giant
+  revision: 8d0d49f77fb8b5dd78842496ff14afe7dd4d85cb
+  size: giant
+  registers: 4
+feature_spaces:
+- raw
+- normalized
+bootstrap:
+  resamples: 1000
+  confidence: 0.95
+  seed: 42
+tail_diagnostics:
+  k_values:
+  - 2
+  - 2.5
+  - 3
+  - 3.5
+  - 4
+  - 5
+  median_multiples:
+  - 1.25
+  - 1.5
+  - 2.0
+  mad_k: 3.0
+raw_norm_threshold: 150.0
+raw_threshold_notes: Fixed scale diagnostic, not a universal artifact definition.
+observed_gap_thresholds:
+  large_no_registers_normalized: 68.01323582036801
+  giant_no_registers_raw: 104.61373535038834
+  giant_no_registers_normalized_low: 37.706521649482

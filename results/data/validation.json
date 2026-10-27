@@ -2,24 +2,60 @@
   {
     "model": "large_no_registers",
     "status": "passed",
+    "feature_spaces": [
+      "raw",
+      "normalized"
+    ],
     "images": 20,
     "patches_per_image": 1369
   },
   {
     "model": "large_registers",
     "status": "passed",
+    "feature_spaces": [
+      "raw",
+      "normalized"
+    ],
     "images": 20,
     "patches_per_image": 1369
   },
   {
     "model": "base_no_registers",
     "status": "passed",
+    "feature_spaces": [
+      "raw",
+      "normalized"
+    ],
     "images": 20,
     "patches_per_image": 1369
   },
   {
     "model": "base_registers",
     "status": "passed",
+    "feature_spaces": [
+      "raw",
+      "normalized"
+    ],
+    "images": 20,
+    "patches_per_image": 1369
+  },
+  {
+    "model": "giant_no_registers",
+    "status": "passed",
+    "feature_spaces": [
+      "raw",
+      "normalized"
+    ],
+    "images": 20,
+    "patches_per_image": 1369
+  },
+  {
+    "model": "giant_registers",
+    "status": "passed",
+    "feature_spaces": [
+      "raw",
+      "normalized"
+    ],
     "images": 20,
     "patches_per_image": 1369
   }

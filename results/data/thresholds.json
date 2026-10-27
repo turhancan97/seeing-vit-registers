@@ -1,23 +1,122 @@
 {
   "large": {
-    "threshold": 68.01323582036801,
-    "method": "largest relative upper-tail gap",
-    "gap_lower": 55.72613525390625,
-    "gap_upper": 83.00952911376953,
-    "gap_ratio": 1.4895978114317696,
-    "clear_gap": true,
-    "rule": "Search the configured upper-tail quantiles; require the configured gap ratio; use its geometric midpoint.",
-    "estimated_threshold": 68.01323582036801
+    "raw": {
+      "threshold": 95.07629737671031,
+      "method": "Otsu on log norms (no clear gap)",
+      "gap_lower": 129.1197967529297,
+      "gap_upper": 130.6009063720703,
+      "gap_ratio": 1.0114708174608942,
+      "clear_gap": false,
+      "rule": "No >=20% adjacent gap in baseline percentiles 90–99.99; maximize 256-bin log-norm Otsu between-class variance. Descriptive split, not proof of a separate artifact mode.",
+      "lower_gap": {
+        "clear_gap": false,
+        "gap_ratio": 1.0134465140205446,
+        "gap_lower": 62.646759033203125,
+        "gap_upper": 63.489139556884766,
+        "threshold": null
+      },
+      "feature_space": "raw",
+      "reference_threshold": 150.0,
+      "reference_kind": "fixed raw scale diagnostic"
+    },
+    "normalized": {
+      "threshold": 68.01323582036801,
+      "method": "largest relative upper-tail gap",
+      "gap_lower": 55.72613525390625,
+      "gap_upper": 83.00952911376953,
+      "gap_ratio": 1.4895978114317696,
+      "clear_gap": true,
+      "rule": "Search the configured upper-tail quantiles; require the configured gap ratio; use its geometric midpoint.",
+      "lower_gap": {
+        "clear_gap": false,
+        "gap_ratio": 1.005272281986309,
+        "gap_lower": 38.65357971191406,
+        "gap_upper": 38.85737228393555,
+        "threshold": null
+      },
+      "feature_space": "normalized",
+      "reference_threshold": 68.01323582036801,
+      "reference_kind": "historical normalized cutoff"
+    }
   },
   "base": {
-    "threshold": 68.01323582036801,
-    "method": "large-model gap cutoff; no clear separate gap in this size",
-    "gap_lower": 58.00548553466797,
-    "gap_upper": 58.16160202026367,
-    "gap_ratio": 1.0026914089961785,
-    "clear_gap": false,
-    "rule": "No >=20% adjacent gap in baseline percentiles 90–99.99; maximize 256-bin log-norm Otsu between-class variance. Descriptive split, not proof of a separate artifact mode. The unimodal Otsu split is not used to label artifacts. Apply the large-model cutoff for a common absolute-scale comparison.",
-    "unimodal_descriptive_split": 48.11788032068997,
-    "estimated_threshold": 68.01323582036801
+    "raw": {
+      "threshold": 54.98848719206423,
+      "method": "Otsu on log norms (no clear gap)",
+      "gap_lower": 71.43231964111328,
+      "gap_upper": 71.75128936767578,
+      "gap_ratio": 1.0044653418531704,
+      "clear_gap": false,
+      "rule": "No >=20% adjacent gap in baseline percentiles 90–99.99; maximize 256-bin log-norm Otsu between-class variance. Descriptive split, not proof of a separate artifact mode.",
+      "lower_gap": {
+        "clear_gap": false,
+        "gap_ratio": 1.0134299626547913,
+        "gap_lower": 37.31426239013672,
+        "gap_upper": 37.815391540527344,
+        "threshold": null
+      },
+      "feature_space": "raw",
+      "reference_threshold": 150.0,
+      "reference_kind": "fixed raw scale diagnostic"
+    },
+    "normalized": {
+      "threshold": 48.11788032068997,
+      "method": "Otsu on log norms (no clear gap)",
+      "gap_lower": 58.00548553466797,
+      "gap_upper": 58.16160202026367,
+      "gap_ratio": 1.0026914089961785,
+      "clear_gap": false,
+      "rule": "No >=20% adjacent gap in baseline percentiles 90–99.99; maximize 256-bin log-norm Otsu between-class variance. Descriptive split, not proof of a separate artifact mode.",
+      "lower_gap": {
+        "clear_gap": false,
+        "gap_ratio": 1.0043952043363897,
+        "gap_lower": 39.35681915283203,
+        "gap_upper": 39.52980041503906,
+        "threshold": null
+      },
+      "feature_space": "normalized",
+      "reference_threshold": 68.01323582036801,
+      "reference_kind": "historical normalized cutoff"
+    }
+  },
+  "giant": {
+    "raw": {
+      "threshold": 104.61373535038834,
+      "method": "largest relative upper-tail gap",
+      "gap_lower": 86.83934783935547,
+      "gap_upper": 126.02620697021484,
+      "gap_ratio": 1.4512569486743652,
+      "clear_gap": true,
+      "rule": "Search the configured upper-tail quantiles; require the configured gap ratio; use its geometric midpoint.",
+      "lower_gap": {
+        "clear_gap": false,
+        "gap_ratio": 1.0076233428270007,
+        "gap_lower": 37.3741455078125,
+        "gap_upper": 37.659061431884766,
+        "threshold": null
+      },
+      "feature_space": "raw",
+      "reference_threshold": 150.0,
+      "reference_kind": "fixed raw scale diagnostic"
+    },
+    "normalized": {
+      "threshold": 28.059777999557404,
+      "method": "Otsu on log norms (no clear gap)",
+      "gap_lower": 62.819091796875,
+      "gap_upper": 63.04029846191406,
+      "gap_ratio": 1.0035213286074611,
+      "clear_gap": false,
+      "rule": "No >=20% adjacent gap in baseline percentiles 90–99.99; maximize 256-bin log-norm Otsu between-class variance. Descriptive split, not proof of a separate artifact mode.",
+      "lower_gap": {
+        "clear_gap": true,
+        "gap_ratio": 1.8227792135010636,
+        "gap_lower": 27.928617477416992,
+        "gap_upper": 50.9077033996582,
+        "threshold": 37.706521649482
+      },
+      "feature_space": "normalized",
+      "reference_threshold": 68.01323582036801,
+      "reference_kind": "historical normalized cutoff"
+    }
   }
 }

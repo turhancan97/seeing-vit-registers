@@ -1,0 +1,101 @@
+{
+  "status": "passed",
+  "models": 6,
+  "images_per_model": 20,
+  "feature_spaces": [
+    "raw",
+    "normalized"
+  ],
+  "fresh_notebook": "passed",
+  "six_model_cli": "passed",
+  "bootstrap_resamples": 1000,
+  "bootstrap_unit": "image",
+  "bootstrap_intervals_independently_reconstructed": true,
+  "checkpoint_revisions_pinned": true,
+  "legacy_four_model_regression": [
+    {
+      "model": "large_no_registers",
+      "max_absolute_legacy_array_errors": {
+        "layer_norms": 0.0,
+        "final_norms": 0.0,
+        "normalized_norms": 0.0,
+        "embedding_neighbor_cosine": 0.0,
+        "selected_indices": 0.0,
+        "features": 0.0,
+        "pca_rgb": 0.0,
+        "pca_variance_ratio": 0.0,
+        "cls_attention": 0.0,
+        "cosine": 0.0,
+        "rollout": 0.0,
+        "rollout_mass": 0.0
+      }
+    },
+    {
+      "model": "large_registers",
+      "max_absolute_legacy_array_errors": {
+        "layer_norms": 0.0,
+        "final_norms": 0.0,
+        "normalized_norms": 0.0,
+        "embedding_neighbor_cosine": 0.0,
+        "selected_indices": 0.0,
+        "features": 0.0,
+        "pca_rgb": 0.0,
+        "pca_variance_ratio": 0.0,
+        "cls_attention": 0.0,
+        "cosine": 0.0,
+        "rollout": 0.0,
+        "rollout_mass": 0.0
+      }
+    },
+    {
+      "model": "base_no_registers",
+      "max_absolute_legacy_array_errors": {
+        "layer_norms": 0.0,
+        "final_norms": 0.0,
+        "normalized_norms": 0.0,
+        "embedding_neighbor_cosine": 0.0,
+        "selected_indices": 0.0,
+        "features": 0.0,
+        "pca_rgb": 0.0,
+        "pca_variance_ratio": 0.0,
+        "cls_attention": 0.0,
+        "cosine": 0.0,
+        "rollout": 0.0,
+        "rollout_mass": 0.0
+      }
+    },
+    {
+      "model": "base_registers",
+      "max_absolute_legacy_array_errors": {
+        "layer_norms": 0.0,
+        "final_norms": 0.0,
+        "normalized_norms": 0.0,
+        "embedding_neighbor_cosine": 0.0,
+        "selected_indices": 0.0,
+        "features": 0.0,
+        "pca_rgb": 0.0,
+        "pca_variance_ratio": 0.0,
+        "cls_attention": 0.0,
+        "cosine": 0.0,
+        "rollout": 0.0,
+        "rollout_mass": 0.0
+      }
+    }
+  ],
+  "png_300_dpi_count": 49,
+  "pdf_count": 48,
+  "giant_checkpoint_digests": [
+    {
+      "id": "facebook/dinov2-giant",
+      "revision": "611a9d42f2335e0f921f1e313ad3c1b7178d206d",
+      "size": 4546005432,
+      "sha256": "917d3c470db999d32a312f8542149be91c7cbac61ee8fb4b67ae3d82b79ce21f"
+    },
+    {
+      "id": "facebook/dinov2-with-registers-giant",
+      "revision": "8d0d49f77fb8b5dd78842496ff14afe7dd4d85cb",
+      "size": 4546030112,
+      "sha256": "c03832d44691e99b62ae28c4dfa2f134853a3614b3756c94f525109cce5a5051"
+    }
+  ]
+}

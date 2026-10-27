@@ -1,0 +1,8 @@
+{
+  "resamples": 1000,
+  "confidence": 0.95,
+  "seed": 42,
+  "unit": "image",
+  "statistic": "ratio of pooled outside/high counts after resampling images",
+  "zero_denominator": "undefined; excluded from percentile calculation and counted explicitly"
+}

@@ -22,7 +22,8 @@
     "cpu_threads": 8,
     "sizes": [
       "large",
-      "base"
+      "base",
+      "giant"
     ],
     "selected_indices": [
       0,
@@ -59,7 +60,11 @@
       "minimum_upper_count": 3,
       "minimum_gap_ratio": 1.2,
       "otsu_bins": 256,
-      "notes": "Exploratory cutoff from the original large no-register gap; shared across models and sizes. Not preregistered."
+      "notes": "Exploratory cutoff from the original large no-register gap; shared across models and sizes. Not preregistered.",
+      "low_search_quantiles": [
+        0.0001,
+        0.1
+      ]
     },
     "image_manifest": "images/manifest.json",
     "annotation_manifest": "images/coco_annotations.json",
@@ -95,8 +100,54 @@
         "revision": "a1d738ccfa7ae170945f210395d99dde8adb1805",
         "size": "base",
         "registers": 4
+      },
+      {
+        "key": "giant_no_registers",
+        "id": "facebook/dinov2-giant",
+        "revision": "611a9d42f2335e0f921f1e313ad3c1b7178d206d",
+        "size": "giant",
+        "registers": 0
+      },
+      {
+        "key": "giant_registers",
+        "id": "facebook/dinov2-with-registers-giant",
+        "revision": "8d0d49f77fb8b5dd78842496ff14afe7dd4d85cb",
+        "size": "giant",
+        "registers": 4
       }
-    ]
+    ],
+    "feature_spaces": [
+      "raw",
+      "normalized"
+    ],
+    "bootstrap": {
+      "resamples": 1000,
+      "confidence": 0.95,
+      "seed": 42
+    },
+    "tail_diagnostics": {
+      "k_values": [
+        2,
+        2.5,
+        3,
+        3.5,
+        4,
+        5
+      ],
+      "median_multiples": [
+        1.25,
+        1.5,
+        2.0
+      ],
+      "mad_k": 3.0
+    },
+    "raw_norm_threshold": 150.0,
+    "raw_threshold_notes": "Fixed scale diagnostic, not a universal artifact definition.",
+    "observed_gap_thresholds": {
+      "large_no_registers_normalized": 68.01323582036801,
+      "giant_no_registers_raw": 104.61373535038834,
+      "giant_no_registers_normalized_low": 37.706521649482
+    }
   },
   "source_sha256": {
     "src/__init__.py": "32eff88e5ff467ae2b62cbf10a60299d4370bc179436a5fdb0af77dbf6590d85",
@@ -104,15 +155,17 @@
     "src/attention.py": "c674441005ec8661aff51cb0c79353ae32341c2af800eb62a505f9a260aa2de6",
     "src/config.py": "c481806dc068a0abf5255002829edd884847510171cbcb930d8fc7e3a4458c4f",
     "src/data.py": "48c48d7fffdc63bd1858375d0186d93090329d1734c1dda20ebe97110380bed4",
-    "src/location.py": "a271a1afc73ff9ab01dcbe3b13f83bd4c0bcdabecda989f7c4aabfd38ae72dde",
+    "src/diagnostics.py": "90aedc19d877aeff34afa3c4e30fd8882d15f27caedad69927a62e15c770447b",
+    "src/location.py": "7236c002e5694b06949731c8a1ff3da66216e398142430d6e5eef3681205e260",
     "src/models.py": "a590425be3e5abb4f3279d30a8562ccc028e07f19a0bf3b7ae2a2726a06ba720",
-    "src/norms.py": "04ebb487df22ff7d55eca1a5c5bd43bf8cf9d15829221abb9b619930f8863223",
-    "src/notebook.py": "01acf16953ece0bc9f9e3f0ffe2076cd92926fa17904bd22b2300903b4c3d815",
-    "src/pca.py": "0678e1652e5329eb9707799430c4e072e8df6e07100cf7301e1a01c1f7f8dd43",
-    "src/pipeline.py": "90ff4015179b6bf9265b92f81e609cbb0ca87100c3bd07e22157809e544471c4",
-    "src/plotting.py": "940caabf6584af810c6b132e5e8176114fdf6c879981bfed6ef0d5b3ae72d58d",
+    "src/norms.py": "491adbe353a4779548c31e51df115128710de73d094ac7a979d7ed841a8be381",
+    "src/notebook.py": "e67eae2c000d728eb8ad725ecb39b9defacbf0e41058c08f92c433c69ffba6f8",
+    "src/pca.py": "b08f694fb1f35048c7a82e41e2794a4c97fdfc6979fcb5ece834446b9710e40b",
+    "src/pipeline.py": "4ff8f97653df29f22b8b179108b988519f4d3984ceaff47fc8756baec6ac4203",
+    "src/plotting.py": "31d63fe0914d52c9b63b9f391a102986d83419f295d1461f2cef7e5f47b7e675",
     "src/runtime.py": "b118827a5ac1590e5b88ca753a8b95a75bfdbc265784d29ebe45d57061ac6abd",
-    "src/validation.py": "be3685e38ce67a714612bb2cccf5654e8075aed8b6b5ed96c2f1a503c6c94a4c"
+    "src/spaces.py": "41b985538f80d12f68a12602cc7877bdd9bd0cac87608b64505627ce0bd9f43f",
+    "src/validation.py": "85382ed6000791be865017c54aa1a3a62feb49ee500d96b90c88f50aa269fe6a"
   },
   "image_manifest_sha256": "c16df57044e198aafcf2d73829ec931339a43c6e91af473a72a5200304069153",
   "annotation_manifest_sha256": "c447a06c4ddff20619d26138691914426fd73cd9b379e79b9dba627f4ea9b551"

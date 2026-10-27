@@ -49,179 +49,260 @@ def choose_threshold(values: np.ndarray, config: Config) -> dict[str, Any]:
     )
 
 
+def norm_statistics(values: np.ndarray) -> dict[str, float]:
+    """Describe magnitude and shape without equating a tail with artifacts."""
+    mean, std = float(values.mean()), float(values.std())
+    return {
+        "mean_norm": mean,
+        "std_norm": std,
+        "max_norm": float(values.max()),
+        "p50": float(np.median(values)),
+        "p95": float(np.quantile(values, 0.95)),
+        "p99": float(np.quantile(values, 0.99)),
+        "mean_plus_3std_threshold": mean + 3 * std,
+        "mean_plus_3std_percent": float((values > mean + 3 * std).mean() * 100),
+    }
+
+
 def analyze(
     config: Config, sources: list[dict[str, Any]], results: Path
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]], dict[str, Any]]:
-    """Export final norms (A), per-layer tails (B), and all sensitivity checks."""
-    grid = config["image_size"] // config["patch_size"]
-    all_stats, layer_rows, image_rows, threshold_rows, redundancy_rows = [], [], [], [], []
-    threshold_info = {}
+    """Export A/B in both spaces, including individual prefix-token layers."""
+    from .spaces import SPACES, reference_threshold
+
+    summary, layer_rows, per_image, sensitivity, prefix_rows, redundancy, scaled = (
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+    )
+    token_statistics = []
+    thresholds = {}
     for size in config["sizes"]:
-        baseline = np.load(results / f"data/{size}_no_registers.npz")
-        info = choose_threshold(baseline["normalized_norms"], config)
-        if not info["clear_gap"] and "large" in threshold_info:
-            info["unimodal_descriptive_split"] = info["threshold"]
-            info["threshold"] = threshold_info["large"]["threshold"]
-            info["method"] = "large-model gap cutoff; no clear separate gap in this size"
-            info["rule"] += (
-                " The unimodal Otsu split is not used to label artifacts. Apply the large-model cutoff for a common absolute-scale comparison."
+        with np.load(results / f"data/{size}_no_registers.npz") as baseline:
+            thresholds[size] = {}
+            for space, desc in SPACES.items():
+                gap = choose_threshold(baseline[desc["norms"]], config)
+                gap["lower_gap"] = choose_lower_threshold(baseline[desc["norms"]], config)
+                gap.update(
+                    feature_space=space,
+                    reference_threshold=reference_threshold(config, space),
+                    reference_kind="historical normalized cutoff"
+                    if space == "normalized"
+                    else "fixed raw scale diagnostic",
+                )
+                thresholds[size][space] = gap
+    for spec in config["models"]:
+        key = spec["key"]
+        data = np.load(results / f"data/{key}.npz")
+        for space, desc in SPACES.items():
+            norms = data[desc["norms"]]
+            layers = data[desc["layers"]]
+            prefix = data[desc["prefix"]]
+            cutoff = reference_threshold(config, space)
+            stats = norm_statistics(norms)
+            gap = choose_threshold(norms, config)
+            lower_gap = choose_lower_threshold(norms, config)
+            summary.append(
+                dict(
+                    model=key,
+                    feature_space=space,
+                    images=len(sources),
+                    patch_tokens=int(norms.size),
+                    **stats,
+                    reference_threshold=cutoff,
+                    above_reference_count=int((norms > cutoff).sum()),
+                    above_reference_percent=float((norms > cutoff).mean() * 100),
+                    clear_lower_gap=lower_gap["clear_gap"],
+                    lower_gap_threshold=lower_gap["threshold"],
+                    below_gap_count=int((norms < lower_gap["threshold"]).sum())
+                    if lower_gap["clear_gap"]
+                    else None,
+                    clear_gap=gap["clear_gap"],
+                    gap_ratio=gap["gap_ratio"],
+                    gap_threshold=gap["threshold"] if gap["clear_gap"] else None,
+                    gap_above_count=int((norms > gap["threshold"]).sum())
+                    if gap["clear_gap"]
+                    else None,
+                    gap_above_percent=float((norms > gap["threshold"]).mean() * 100)
+                    if gap["clear_gap"]
+                    else None,
+                )
             )
-        info["estimated_threshold"] = info["threshold"]
-        info["threshold"] = config["threshold"]["value"]
-        threshold_info[size] = info
-        for suffix in ["no_registers", "registers"]:
-            key = f"{size}_{suffix}"
-            data = np.load(results / f"data/{key}.npz")
-            for space, array_key in [
-                ("pre_layernorm", "final_norms"),
-                ("post_layernorm", "normalized_norms"),
-            ]:
-                norms = data[array_key]
-                all_stats.append(
+            for t in dict.fromkeys(
+                [cutoff] + config["fixed_thresholds"] + config["original_thresholds"]
+            ):
+                sensitivity.append(
                     dict(
                         model=key,
                         feature_space=space,
-                        images=len(sources),
-                        patch_tokens=int(norms.size),
-                        mean_norm=float(norms.mean()),
-                        std_norm=float(norms.std()),
-                        max_norm=float(norms.max()),
-                        p50=float(np.median(norms)),
-                        p95=float(np.quantile(norms, 0.95)),
-                        p99=float(np.quantile(norms, 0.99)),
-                        chosen_threshold=info["threshold"],
-                        high_count=int((norms > info["threshold"]).sum()),
-                        high_percent=float((norms > info["threshold"]).mean() * 100),
+                        threshold=t,
+                        kind="reference" if t == cutoff else "fixed",
+                        high_count=int((norms > t).sum()),
+                        high_percent=float((norms > t).mean() * 100),
                     )
                 )
-                for threshold in [info["threshold"]] + config["fixed_thresholds"]:
-                    threshold_rows.append(
-                        dict(
-                            model=key,
-                            feature_space=space,
-                            threshold=threshold,
-                            kind="data_driven" if threshold == info["threshold"] else "fixed",
-                            high_count=int((norms > threshold).sum()),
-                            high_percent=float((norms > threshold).mean() * 100),
-                        )
-                    )
-            norms = data["normalized_norms"]
-            if "embedding_neighbor_cosine" in data:
-                neighbors = data["embedding_neighbor_cosine"].reshape(norms.shape)
-                for name, mask in [
-                    ("high_norm", norms > info["threshold"]),
-                    ("other", norms <= info["threshold"]),
-                ]:
-                    redundancy_rows.append(
-                        dict(
-                            model=key,
-                            group=name,
-                            patch_count=int(mask.sum()),
-                            mean_embedding_neighbor_cosine=float(neighbors[mask].mean())
-                            if mask.any()
-                            else None,
-                            median_embedding_neighbor_cosine=float(np.median(neighbors[mask]))
-                            if mask.any()
-                            else None,
-                        )
-                    )
-            for i, n in enumerate(norms):
-                image_rows.append(
+            median = float(np.median(norms))
+            relative = config["relative_threshold_multiple"] * median
+            scaled.append(
+                dict(
+                    model=key,
+                    feature_space=space,
+                    median_norm=median,
+                    max_to_median=float(norms.max() / median),
+                    relative_threshold_multiple=config["relative_threshold_multiple"],
+                    relative_threshold=relative,
+                    high_count=int((norms > relative).sum()),
+                    high_percent=float((norms > relative).mean() * 100),
+                )
+            )
+            neighbors = data["embedding_neighbor_cosine"].reshape(norms.shape)
+            for name, mask in [("above_reference", norms > cutoff), ("other", norms <= cutoff)]:
+                redundancy.append(
                     dict(
                         model=key,
-                        image_index=i,
-                        image=sources[i]["path"],
-                        mean_norm=float(n.mean()),
-                        max_norm=float(n.max()),
-                        threshold=info["threshold"],
-                        high_count=int((n > info["threshold"]).sum()),
-                        high_percent=float((n > info["threshold"]).mean() * 100),
+                        feature_space=space,
+                        group=name,
+                        patch_count=int(mask.sum()),
+                        mean_embedding_neighbor_cosine=float(neighbors[mask].mean())
+                        if mask.any()
+                        else None,
+                        median_embedding_neighbor_cosine=float(np.median(neighbors[mask]))
+                        if mask.any()
+                        else None,
                     )
                 )
-            layers = data["layer_norms"]
+            for i, n in enumerate(norms):
+                per_image.append(
+                    dict(
+                        model=key,
+                        feature_space=space,
+                        image_index=i,
+                        image=sources[i]["path"],
+                        **norm_statistics(n),
+                        reference_threshold=cutoff,
+                        above_reference_count=int((n > cutoff).sum()),
+                        above_reference_percent=float((n > cutoff).mean() * 100),
+                    )
+                )
             for li in range(layers.shape[1]):
-                a = layers[:, li, :]
-                mean = float(a.mean())
-                std = float(a.std())
-                threshold = mean + config["layer_k"] * std
+                n = layers[:, li]
+                s = norm_statistics(n)
                 layer_rows.append(
                     dict(
                         model=key,
+                        feature_space=space,
                         layer=li,
                         stage="embedding" if li == 0 else "block",
                         k=config["layer_k"],
-                        mean_norm=mean,
-                        std_norm=std,
-                        threshold=threshold,
-                        high_count=int((a > threshold).sum()),
-                        high_percent=float((a > threshold).mean() * 100),
-                        max_norm=float(a.max()),
+                        **s,
+                        threshold=float(n.mean() + config["layer_k"] * n.std()),
+                        high_count=int((n > n.mean() + config["layer_k"] * n.std()).sum()),
+                        high_percent=float(
+                            (n > n.mean() + config["layer_k"] * n.std()).mean() * 100
+                        ),
                     )
                 )
-            # Every last-layer patch norm is available in a human-readable CSV.
-            raw_norms = data["final_norms"]
-            write_csv(
-                results / f"data/{key}_patch_norms.csv",
-                (
-                    dict(
-                        image_index=i,
-                        patch_row=p // grid,
-                        patch_col=p % grid,
-                        pre_layernorm_norm=float(raw_norms[i, p]),
-                        post_layernorm_norm=float(n),
-                        high=bool(n > info["threshold"]),
+                for label, values in [("patches", n)] + [
+                    ("CLS" if t == 0 else f"register_{t}", prefix[:, li, t])
+                    for t in range(prefix.shape[-1])
+                ]:
+                    token_statistics.append(
+                        dict(
+                            model=key,
+                            feature_space=space,
+                            layer=li,
+                            token=label,
+                            token_count=int(values.size),
+                            **norm_statistics(values),
+                        )
                     )
-                    for i, ns in enumerate(norms)
-                    for p, n in enumerate(ns)
-                ),
-            )
-    write_json(results / "data/thresholds.json", threshold_info)
-    original_rows = []
-    for size in config["sizes"]:
-        for suffix in ["no_registers", "registers"]:
-            key = f"{size}_{suffix}"
-            d = np.load(results / f"data/{key}.npz")
-            for t in config["original_thresholds"]:
-                n = d["normalized_norms"]
-                original_rows.append(
-                    dict(
-                        model=key,
-                        feature_space="post_layernorm",
-                        threshold=t,
-                        high_count=int((n > t).sum()),
-                        high_percent=float((n > t).mean() * 100),
-                    )
+                for token in range(prefix.shape[-1]):
+                    for i, value in enumerate(prefix[:, li, token]):
+                        prefix_rows.append(
+                            dict(
+                                model=key,
+                                feature_space=space,
+                                image_index=i,
+                                layer=li,
+                                token="CLS" if token == 0 else f"register_{token}",
+                                norm=float(value),
+                            )
+                        )
+        raw, normalized = data["final_norms"], data["normalized_norms"]
+        grid = config["image_size"] // config["patch_size"]
+        write_csv(
+            results / f"data/{key}_patch_norms.csv",
+            (
+                dict(
+                    image_index=i,
+                    patch_row=j // grid,
+                    patch_col=j % grid,
+                    raw_norm=float(raw[i, j]),
+                    normalized_norm=float(normalized[i, j]),
+                    raw_above_reference=bool(raw[i, j] > reference_threshold(config, "raw")),
+                    normalized_above_reference=bool(
+                        normalized[i, j] > reference_threshold(config, "normalized")
+                    ),
                 )
-    write_csv(results / "data/original_threshold_diagnostic.csv", original_rows)
+                for i in range(len(sources))
+                for j in range(grid**2)
+            ),
+        )
+    relative_rows = []
+    for spec in config["models"]:
+        with np.load(results / f"data/{spec['key']}.npz") as d:
+            for space, desc in SPACES.items():
+                n = d[desc["norms"]]
+                for multiple in config["tail_diagnostics"]["median_multiples"]:
+                    t = multiple * float(np.median(n))
+                    relative_rows.append(
+                        dict(
+                            model=spec["key"],
+                            feature_space=space,
+                            multiple=multiple,
+                            threshold=t,
+                            count=int((n > t).sum()),
+                            percent=float((n > t).mean() * 100),
+                        )
+                    )
+    write_csv(results / "data/scale_adjusted_sensitivity.csv", relative_rows)
+    write_json(results / "data/thresholds.json", thresholds)
     for name, rows in [
-        ("summary", all_stats),
-        ("threshold_sensitivity", threshold_rows),
-        ("per_image", image_rows),
+        ("layer_token_statistics", token_statistics),
+        ("summary", summary),
         ("layer_statistics", layer_rows),
-        ("redundancy", redundancy_rows),
+        ("per_image", per_image),
+        ("threshold_sensitivity", sensitivity),
+        ("prefix_token_norms", prefix_rows),
+        ("redundancy", redundancy),
+        ("scale_adjusted_tail", scaled),
     ]:
         write_csv(results / f"data/{name}.csv", rows)
-    write_scale_adjusted_tails(config, results)
-    return all_stats, layer_rows, threshold_info
+    # Keep the original diagnostic filename, now explicitly covering both spaces.
+    write_csv(
+        results / "data/original_threshold_diagnostic.csv",
+        [r for r in sensitivity if r["threshold"] in config["original_thresholds"]],
+    )
+    return summary, layer_rows, thresholds
 
 
-def write_scale_adjusted_tails(config: Config, results: Path) -> None:
-    """Check whether tails persist after dividing by each model's median."""
-    rows = []
-    for spec in config["models"]:
-        with np.load(results / f"data/{spec['key']}.npz") as data:
-            norms = data["normalized_norms"]
-        median = float(np.median(norms))
-        cutoff = config["relative_threshold_multiple"] * median
-        rows.append(
-            {
-                "model": spec["key"],
-                "median_norm": median,
-                "max_to_median": float(norms.max() / median),
-                "relative_threshold_multiple": config["relative_threshold_multiple"],
-                "relative_threshold": cutoff,
-                "high_count": int((norms > cutoff).sum()),
-                "high_percent": float((norms > cutoff).mean() * 100),
-            }
-        )
-    write_csv(results / "data/scale_adjusted_tail.csv", rows)
+def choose_lower_threshold(values: np.ndarray, config: Config) -> dict[str, Any]:
+    """Find a separated low-norm group using the same configured gap criterion."""
+    a = np.sort(values.ravel().astype(np.float64))
+    qlow, qhigh = config["threshold"]["low_search_quantiles"]
+    lo = max(config["threshold"]["minimum_upper_count"] - 1, int(qlow * len(a)))
+    hi = int(qhigh * len(a))
+    j = lo + int(np.argmax(a[lo + 1 : hi + 1] / a[lo:hi]))
+    ratio = float(a[j + 1] / a[j])
+    clear = ratio >= config["threshold"]["minimum_gap_ratio"]
+    return {
+        "clear_gap": clear,
+        "gap_ratio": ratio,
+        "gap_lower": float(a[j]),
+        "gap_upper": float(a[j + 1]),
+        "threshold": float(np.sqrt(a[j] * a[j + 1])) if clear else None,
+    }

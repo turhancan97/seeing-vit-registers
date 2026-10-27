@@ -1,0 +1,7 @@
+model,source_feature_space,target_feature_space,raw_high_gap_count,normalized_low_gap_count,raw_high_to_normalized_low_overlap,normalized_low_gap_threshold,normalized_median_for_raw_high,normalized_median_for_other_raw
+large_no_registers,raw,normalized,0,0,0,,,46.05046844482422
+large_registers,raw,normalized,0,0,0,,,23.491416931152344
+base_no_registers,raw,normalized,0,0,0,,,48.8662223815918
+base_registers,raw,normalized,0,0,0,,,24.803184509277344
+giant_no_registers,raw,normalized,442,443,442,37.706521649482,19.454729080200195,58.642677307128906
+giant_registers,raw,normalized,0,0,0,,,52.6409912109375

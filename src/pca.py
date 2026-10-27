@@ -1,4 +1,4 @@
-"""Independent per-image PCA projections of final normalized patch features."""
+"""Independent per-image PCA for explicitly supplied raw or normalized features."""
 
 import numpy as np
 from sklearn.decomposition import PCA
