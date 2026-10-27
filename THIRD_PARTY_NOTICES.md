@@ -1,6 +1,6 @@
 # Third-party material
 
-`src/_featlens.py` contains the original cosine and rollout kernels from [FeatLens](https://github.com/turhancan97/FeatLens), commit `07eddd718a5a53d11ca5cc21e69a21d0f7b9f2c3`. Their original license follows.
+[FeatLens](https://github.com/turhancan97/FeatLens) v0.3.2 is installed as a pip dependency at commit `07eddd718a5a53d11ca5cc21e69a21d0f7b9f2c3`. `src/attention.py` imports its cosine-similarity function and rollout helper directly; no FeatLens source is bundled here. Earlier revisions bundled the same functions, and existing figures were produced using that equivalent implementation. FeatLens is MIT-licensed; its license is reproduced below for attribution.
 
 ```text
 MIT License

@@ -36,6 +36,8 @@ python -m pip install -r requirements.txt
 python scripts/run_all.py
 ```
 
+Git is required to install the pinned dependency. FeatLens is installed by pip from an exact Git commit in `requirements.txt`; its code is imported directly rather than copied into this repository.
+
 The command verifies/downloads the same 20 images, performs **fresh inference** for all six pinned models, and regenerates tables and 300 dpi PNG/PDF figures. For Colab, open the badge, choose a GPU runtime with sufficient memory, and run all cells. The notebook installs requirements in Colab and only calls `src/` functions for the experiment.
 
 ```bash
@@ -132,7 +134,7 @@ Full definitions, prefix tables, bootstrap handling and diagnostics are in [docs
 
 - [Original paper — Darcet et al.](https://arxiv.org/abs/2309.16588)
 - [DINOv2](https://github.com/facebookresearch/dinov2)
-- [FeatLens](https://github.com/turhancan97/FeatLens), with attributed kernels in [`src/_featlens.py`](src/_featlens.py) and [third-party notices](THIRD_PARTY_NOTICES.md).
+- [FeatLens](https://github.com/turhancan97/FeatLens), installed at commit `07eddd718a5a53d11ca5cc21e69a21d0f7b9f2c3` (v0.3.2), with the Hugging Face integration in [`src/attention.py`](src/attention.py) and [third-party notices](THIRD_PARTY_NOTICES.md).
 - **Blog post: TODO** — add the Hugging Face post URL when published.
 
 ## Citation

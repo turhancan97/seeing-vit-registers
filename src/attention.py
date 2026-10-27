@@ -4,7 +4,10 @@ from typing import Sequence
 import numpy as np
 import torch
 from .models import TokenLayout
-from ._featlens import cosine_similarity_map, _rollout
+from featlens.methods import cosine_similarity_map
+# The pinned version exposes rollout over supplied attentions through this helper;
+# its public attention() entry point captures timm models, not Hugging Face models.
+from featlens.attention import _rollout
 
 
 def cls_attention(
@@ -24,14 +27,14 @@ def cls_attention(
 
 
 def cosine_map(features: torch.Tensor, seed_xy: Sequence[float]) -> np.ndarray:
-    """Call the original FeatLens cosine-to-seed kernel on an H×W×D grid."""
+    """Call the installed FeatLens cosine-to-seed function on an H×W×D grid."""
     return cosine_similarity_map(features, seed_xy)
 
 
 def attention_rollout(
     attentions: tuple[torch.Tensor, ...], layout: TokenLayout
 ) -> tuple[np.ndarray, np.ndarray]:
-    """Compose every full attention matrix with the original FeatLens kernel."""
+    """Compose full attentions with installed FeatLens before slicing prefix tokens."""
     averaged = [a.detach().mean(dim=1, keepdim=True).cpu() for a in attentions]
     rolled = _rollout(averaged, head="mean", discard_ratio=0.0)
     assert np.allclose(rolled.sum(axis=1), 1, rtol=2e-4, atol=2e-5)

@@ -24,6 +24,7 @@ Every norm table has a `feature_space` column or explicitly named raw/normalized
 | `background_proxy_summary.csv`, `background_proxy_per_image.csv` | Outside-object fractions for references, 3σ rules, observed gaps and fixed cutoffs in both spaces |
 | `bootstrap_outside_fraction.csv`, `bootstrap_settings.json` | Seeded image-bootstrap samples/settings and explicit undefined/valid-draw accounting |
 | `models.json`, `environment.json`, `run_provenance.json`, `validation.json` | Pinned revisions, versions/hardware and peak torch GPU memory, settings/source hashes, and domain checks |
+| `featlens_dependency_validation.json` | One-time dependency migration audit: exact upstream commit, unchanged function ASTs, 72 saved cosine maps, and full-grid rollout parity with/without registers |
 | `image_sources.json`, `image_attribution.csv` | Exact input hashes, dimensions, source URLs and licenses |
 
 References are **68.0 normalized** and **150.0 raw**. The raw reference is a scale diagnostic, not a universal artifact definition. Machine-readable values retain full precision. The observed Giant raw gap is **104.6**, with the full value also recorded in config. See `../../docs/methods.md`.

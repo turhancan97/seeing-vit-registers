@@ -75,6 +75,7 @@ def sha256(path: Path) -> str:
 def environment() -> dict[str, Any]:
     """Record installed packages and compute hardware without private host paths."""
     names = [
+        "featlens",
         "torch",
         "torchvision",
         "transformers",
@@ -98,6 +99,9 @@ def environment() -> dict[str, Any]:
         "user_site_enabled": site.ENABLE_USER_SITE,
         "platform": platform.system(),
         "versions": {name: importlib.metadata.version(name) for name in names},
+        "featlens_direct_url": json.loads(
+            importlib.metadata.distribution("featlens").read_text("direct_url.json") or "null"
+        ),
         "torch_runtime_version": torch.__version__,
         "cuda": torch.version.cuda,
         "gpu": torch.cuda.get_device_name() if torch.cuda.is_available() else None,
