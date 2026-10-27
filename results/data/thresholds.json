@@ -1,0 +1,23 @@
+{
+  "large": {
+    "threshold": 68.01323582036801,
+    "method": "largest relative upper-tail gap",
+    "gap_lower": 55.72613525390625,
+    "gap_upper": 83.00952911376953,
+    "gap_ratio": 1.4895978114317696,
+    "clear_gap": true,
+    "rule": "Search the configured upper-tail quantiles; require the configured gap ratio; use its geometric midpoint.",
+    "estimated_threshold": 68.01323582036801
+  },
+  "base": {
+    "threshold": 68.01323582036801,
+    "method": "large-model gap cutoff; no clear separate gap in this size",
+    "gap_lower": 58.00548553466797,
+    "gap_upper": 58.16160202026367,
+    "gap_ratio": 1.0026914089961785,
+    "clear_gap": false,
+    "rule": "No >=20% adjacent gap in baseline percentiles 90–99.99; maximize 256-bin log-norm Otsu between-class variance. Descriptive split, not proof of a separate artifact mode. The unimodal Otsu split is not used to label artifacts. Apply the large-model cutoff for a common absolute-scale comparison.",
+    "unimodal_descriptive_split": 48.11788032068997,
+    "estimated_threshold": 68.01323582036801
+  }
+}

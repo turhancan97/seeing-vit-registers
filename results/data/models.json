@@ -1,0 +1,62 @@
+{
+  "large_no_registers": {
+    "model_id": "facebook/dinov2-large",
+    "revision": "47b73eefe95e8d44ec3623f8890bd894b6ea2d6c",
+    "model_class": "Dinov2Model",
+    "backend": "transformers",
+    "registers": 0,
+    "layers": 24,
+    "hidden_size": 1024,
+    "dtype": "float32",
+    "attention_implementation": "eager",
+    "sequence_length": 1370,
+    "parameter_count": 304368640,
+    "image_count": 20,
+    "elapsed_seconds": 12.365491852164268
+  },
+  "large_registers": {
+    "model_id": "facebook/dinov2-with-registers-large",
+    "revision": "e4c89a4e05589de9b3e188688a303d0f3c04d0f3",
+    "model_class": "Dinov2WithRegistersModel",
+    "backend": "transformers",
+    "registers": 4,
+    "layers": 24,
+    "hidden_size": 1024,
+    "dtype": "float32",
+    "attention_implementation": "eager",
+    "sequence_length": 1374,
+    "parameter_count": 304372736,
+    "image_count": 20,
+    "elapsed_seconds": 10.764793040696532
+  },
+  "base_no_registers": {
+    "model_id": "facebook/dinov2-base",
+    "revision": "f9e44c814b77203eaa57a6bdbbd535f21ede1415",
+    "model_class": "Dinov2Model",
+    "backend": "transformers",
+    "registers": 0,
+    "layers": 12,
+    "hidden_size": 768,
+    "dtype": "float32",
+    "attention_implementation": "eager",
+    "sequence_length": 1370,
+    "parameter_count": 86580480,
+    "image_count": 20,
+    "elapsed_seconds": 5.343108305707574
+  },
+  "base_registers": {
+    "model_id": "facebook/dinov2-with-registers-base",
+    "revision": "a1d738ccfa7ae170945f210395d99dde8adb1805",
+    "model_class": "Dinov2WithRegistersModel",
+    "backend": "transformers",
+    "registers": 4,
+    "layers": 12,
+    "hidden_size": 768,
+    "dtype": "float32",
+    "attention_implementation": "eager",
+    "sequence_length": 1374,
+    "parameter_count": 86583552,
+    "image_count": 20,
+    "elapsed_seconds": 6.61440244410187
+  }
+}

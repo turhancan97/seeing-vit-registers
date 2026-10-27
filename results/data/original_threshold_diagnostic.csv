@@ -1,0 +1,13 @@
+model,feature_space,threshold,high_count,high_percent
+large_no_registers,post_layernorm,100,0,0.0
+large_no_registers,post_layernorm,150,0,0.0
+large_no_registers,post_layernorm,200,0,0.0
+large_registers,post_layernorm,100,0,0.0
+large_registers,post_layernorm,150,0,0.0
+large_registers,post_layernorm,200,0,0.0
+base_no_registers,post_layernorm,100,0,0.0
+base_no_registers,post_layernorm,150,0,0.0
+base_no_registers,post_layernorm,200,0,0.0
+base_registers,post_layernorm,100,0,0.0
+base_registers,post_layernorm,150,0,0.0
+base_registers,post_layernorm,200,0,0.0

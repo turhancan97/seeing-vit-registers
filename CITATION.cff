@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: Please cite this repository and the original paper when using this reproduction.
+type: software
+title: 'Seeing ViT Registers: An Independent DINOv2 Reproduction'
+authors:
+  - family-names: Kargın
+    given-names: Turhan Can
+version: 0.1.0
+date-released: '2026-10-27'
+license: MIT
+url: https://github.com/turhancan97/seeing-vit-registers
+repository-code: https://github.com/turhancan97/seeing-vit-registers
+keywords:
+  - vision transformers
+  - DINOv2
+  - register tokens
+  - reproducibility

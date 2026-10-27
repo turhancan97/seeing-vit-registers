@@ -1,0 +1,9 @@
+model,group,patch_count,mean_embedding_neighbor_cosine,median_embedding_neighbor_cosine
+large_no_registers,high_norm,21,0.8797819018363953,0.9769663214683533
+large_no_registers,other,27359,0.5990500450134277,0.6149824857711792
+large_registers,high_norm,0,,
+large_registers,other,27380,0.6816095113754272,0.7194896936416626
+base_no_registers,high_norm,0,,
+base_no_registers,other,27380,0.6770933866500854,0.729413628578186
+base_registers,high_norm,0,,
+base_registers,other,27380,0.6872839331626892,0.7388772964477539

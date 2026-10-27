@@ -1,0 +1,26 @@
+[
+  {
+    "model": "large_no_registers",
+    "status": "passed",
+    "images": 20,
+    "patches_per_image": 1369
+  },
+  {
+    "model": "large_registers",
+    "status": "passed",
+    "images": 20,
+    "patches_per_image": 1369
+  },
+  {
+    "model": "base_no_registers",
+    "status": "passed",
+    "images": 20,
+    "patches_per_image": 1369
+  },
+  {
+    "model": "base_registers",
+    "status": "passed",
+    "images": 20,
+    "patches_per_image": 1369
+  }
+]

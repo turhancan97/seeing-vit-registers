@@ -1,0 +1,17 @@
+model,threshold,kind,high_count,high_outside_instances,high_inside_instances,percent_high_outside_instances,percent_all_patches_outside_instances,high_rate_outside_instances_percent,high_rate_inside_instances_percent,rate_ratio
+large_no_registers,68.01323582036801,data_driven,21,19,2,90.47619047619048,68.42220598977356,0.10141987829614604,0.023132084200786492,4.3843813387423936
+large_no_registers,60,fixed,21,19,2,90.47619047619048,68.42220598977356,0.10141987829614604,0.023132084200786492,4.3843813387423936
+large_no_registers,80,fixed,21,19,2,90.47619047619048,68.42220598977356,0.10141987829614604,0.023132084200786492,4.3843813387423936
+large_no_registers,150,fixed,0,0,0,,68.42220598977356,0.0,0.0,
+large_registers,68.01323582036801,data_driven,0,0,0,,68.42220598977356,0.0,0.0,
+large_registers,60,fixed,0,0,0,,68.42220598977356,0.0,0.0,
+large_registers,80,fixed,0,0,0,,68.42220598977356,0.0,0.0,
+large_registers,150,fixed,0,0,0,,68.42220598977356,0.0,0.0,
+base_no_registers,68.01323582036801,data_driven,0,0,0,,68.42220598977356,0.0,0.0,
+base_no_registers,60,fixed,0,0,0,,68.42220598977356,0.0,0.0,
+base_no_registers,80,fixed,0,0,0,,68.42220598977356,0.0,0.0,
+base_no_registers,150,fixed,0,0,0,,68.42220598977356,0.0,0.0,
+base_registers,68.01323582036801,data_driven,0,0,0,,68.42220598977356,0.0,0.0,
+base_registers,60,fixed,0,0,0,,68.42220598977356,0.0,0.0,
+base_registers,80,fixed,0,0,0,,68.42220598977356,0.0,0.0,
+base_registers,150,fixed,0,0,0,,68.42220598977356,0.0,0.0,
